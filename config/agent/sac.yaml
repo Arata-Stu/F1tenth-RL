@@ -1,0 +1,19 @@
+name: sac
+actor:
+  name: 1dconv ## 1dconv mlp
+  state_dim: 1080
+  action_dim: 2
+  hidden_dim: 256
+  lr: 0.0003
+
+critic:
+  name: ${agent.actor.name}
+  state_dim: ${agent.actor.state_dim}
+  action_dim: ${agent.actor.action_dim}
+  hidden_dim: ${agent.actor.hidden_dim}
+  lr: 0.0003
+
+alpha_lr: 0.0003
+target_entropy: null
+tau: 0.005
+gamma: 0.99

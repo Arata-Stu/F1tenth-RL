@@ -1,0 +1,4 @@
+name: off_policy
+buffer_size: 100000
+state_shape: ${agent.actor.state_dim}
+action_dim: ${agent.actor.action_dim}

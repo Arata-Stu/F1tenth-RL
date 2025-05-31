@@ -1,0 +1,14 @@
+name: TAL
+steer_range: ${envs.steer_range}
+speed_range: ${envs.speed_range}
+steer_w: 0.4
+speed_w: 0.4
+bias: 0.25
+ratio: 1.0
+
+planner:
+  wheelbase: ${planner.wheelbase}
+  lookahead: ${planner.lookahead}
+  gain: ${planner.gain}
+  max_reacquire: ${planner.max_reacquire}
+

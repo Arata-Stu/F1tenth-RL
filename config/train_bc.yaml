@@ -1,0 +1,15 @@
+model:
+  input_length: 1080
+  hidden_dim: 256
+  policy_type: "1dconv"
+  pretrained_path: ???
+
+data:
+  root_dir: "./outputs"
+  range_max: 30.0
+
+train:
+  batch_size: 32
+  num_epochs: 50
+  lr: 1e-5
+  save_dir: "./ckpts/train_bc"

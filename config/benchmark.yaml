@@ -1,0 +1,28 @@
+defaults:
+  - vehicle: default
+  - envs: default 
+  - planner: pure_pursuit
+  - agent: sac
+
+ckpt: ???
+
+## 2d scan buffer
+scan_n: 1
+downsample_beam: 1080
+
+## 速度設定
+speed: 6.0
+use_dynamic_speed: False
+line_type: race ## race center
+
+num_steps: 100000
+
+## 可視化設定
+render: False
+render_mode: "human" ## human or human_fast
+
+benchmark_dir: ./benchmarks/${now:%Y-%m-%d}/${now:%H-%M-%S}/
+
+hydra:
+  run:
+    dir: ./outputs/benchmark/${now:%Y-%m-%d}/${now:%H-%M-%S}
