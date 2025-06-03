@@ -40,10 +40,24 @@ def main(cfg: DictConfig):
                       action_dim=2,
                       hidden_dim=cfg.model.hidden_dim,
                       policy_type=cfg.model.policy_type).to(device)
-
+    
     if cfg.model.pretrained_path:
-        actor.load_state_dict(torch.load(cfg.model.pretrained_path, map_location=device))
-        print(f"[✔] Pretrained weights loaded from {cfg.model.pretrained_path}")
+        checkpoint = torch.load(cfg.model.pretrained_path, map_location=device)
+                
+                # 'actor' というキーで保存されているアクターの state_dict を読み込む
+        if 'actor' in checkpoint:
+            actor.load_state_dict(checkpoint['actor'])
+            print(f"[✔] Pretrained actor weights successfully loaded from {cfg.model.pretrained_path}")
+
+            for param in actor.lidar_backbone.parameters():
+                param.requires_grad = False
+        else:
+            # もし 'actor' キーが存在しない場合、ファイルが期待した形式でない可能性がある
+            # あるいは、ファイルがアクターの state_dict そのものである可能性も考慮
+            # (ただし、最初のTracebackからはその可能性は低い)
+            print(f"[!] Warning: 'actor' key not found in the checkpoint. Attempting to load the entire file as state_dict...")
+            ## error
+            NotImplementedError("The checkpoint does not contain the expected 'actor' key. Please check the file format.")
 
     # --- 最適化設定 ---
     criterion = nn.MSELoss()
