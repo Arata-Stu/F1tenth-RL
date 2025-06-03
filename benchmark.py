@@ -23,6 +23,7 @@ def main(cfg: DictConfig):
     map_manager = MapManager(
         map_name=cfg.envs.map.name,
         map_ext=cfg.envs.map.ext,
+        line_type= cfg.envs.map.line_type,
         speed=cfg.envs.map.speed,
         downsample=cfg.envs.map.downsample,
         use_dynamic_speed=cfg.envs.map.use_dynamic_speed,
