@@ -9,6 +9,7 @@ from omegaconf import DictConfig, OmegaConf
 from src.models.actor import get_actor
 from src.data.dataset.lidar_dataset import MultiBagE2EDataset
 from src.data.dataset.transform import E2ETransform
+from src.utils.helper import convert_action
 
 @hydra.main(config_path="config", config_name="train_bc", version_base="1.2")
 def main(cfg: DictConfig):
@@ -52,9 +53,7 @@ def main(cfg: DictConfig):
             for param in actor.lidar_backbone.parameters():
                 param.requires_grad = False
         else:
-            # もし 'actor' キーが存在しない場合、ファイルが期待した形式でない可能性がある
-            # あるいは、ファイルがアクターの state_dict そのものである可能性も考慮
-            # (ただし、最初のTracebackからはその可能性は低い)
+            
             print(f"[!] Warning: 'actor' key not found in the checkpoint. Attempting to load the entire file as state_dict...")
             ## error
             NotImplementedError("The checkpoint does not contain the expected 'actor' key. Please check the file format.")
@@ -73,6 +72,7 @@ def main(cfg: DictConfig):
 
             mean, _ = actor(scan)
             action = torch.tanh(mean)
+            action = convert_action(action, steer_range=1.0, speed_range=1.0)
 
             loss = criterion(action, target)
 
